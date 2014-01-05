@@ -235,12 +235,7 @@ module.exports = function( grunt ) {
   });
 
   grunt.registerMultiTask('generateinit', 'Generate Init file', function() {
-    var requirejs = require('requirejs');
-    requirejs.config({
-      appDir: __dirname + '/src/',
-      baseUrl: __dirname + '/src/'
-    });
-    var generateInit = requirejs('generate');
+    var generateInit = require('./lib/generate-init');
     grunt.file.write('tmp/modernizr-init.js', generateInit(modConfig));
   });
 
