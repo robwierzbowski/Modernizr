@@ -1,38 +1,40 @@
 define(['underscore'], function( _ ) {
   return function( config ) {
-    // Set some defaults
+    // Set config defaults
     if (!config) {
       config = {};
     }
     config.options = config.options || [];
     config['feature-detects'] = config['feature-detects'] || [];
 
-    // Some special cases
+    // Special cases that need more than concatenation
     var setClasses = _(config.options).contains('setClasses');
 
     // Remove the special cases
     config.options = _(config.options).without('setClasses');
 
+    // Begin building file
     var output = 'require(["ModernizrProto", "Modernizr", "testRunner"';
 
-    // Needed named module requires
+    // Special case requires
     if (setClasses) {
       output += ', "setClasses", "classes"';
     }
 
-    // Load in the rest of the options (they dont return values, so they aren't declared
-    _(config.options).forEach(function (option) {
+    // Load in the rest of the options (they dont return values, so they aren't
+    // declared)
+    config.options.forEach(function (option) {
       output += ', "' + option + '"';
     });
 
     // Load in all the detects
-    _(config['feature-detects']).forEach(function (detect) {
+    config['feature-detects'].forEach(function (detect) {
       output += ', "' + detect + '"';
     });
 
     output += '], function( ModernizrProto, Modernizr, testRunner';
 
-    // Needed named module declarations
+    // Special case module declarations
     if (setClasses) {
       output += ', setClasses, classes';
     }
@@ -42,15 +44,15 @@ define(['underscore'], function( _ ) {
     '  testRunner();\n' +
     '\n';
 
-    // Actually run the setClasses function
+    // Run the setClasses function
     if (setClasses) {
       output += '  // Remove the "no-js" class if it exists\n' +
       '  setClasses(classes);\n' +
       '\n';
     }
 
-    output += '  delete ModernizrProto.addTest;\n';
-    output += '  delete ModernizrProto.addAsyncTest;\n' +
+    output += '  delete ModernizrProto.addTest;\n' +
+    '  delete ModernizrProto.addAsyncTest;\n' +
     '\n';
 
     // TODO:: if there's a way to figure out if there will be no
