@@ -4,7 +4,7 @@ module.exports = function( grunt ) {
   'use strict';
 
   var modConfig = grunt.file.readJSON('lib/config-all.json');
-  var browsers = grunt.file.readJSON('lib/sauce-browsers.json');
+  var browsers = grunt.file.readJSON('test/sauce-browsers.json');
 
   // Load grunt dependencies
   require('load-grunt-tasks')(grunt);
