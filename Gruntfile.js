@@ -43,11 +43,6 @@ module.exports = function( grunt ) {
     stripdefine: {
       build: ['dist/modernizr-build.js']
     },
-    generateinit: {
-      build: {
-        src: ['tmp/modernizr-init.js']
-      }
-    },
     uglify: {
       options: {
         stripbanners: true,
@@ -219,11 +214,6 @@ module.exports = function( grunt ) {
     });
   });
 
-  grunt.registerMultiTask('generateinit', 'Generate Init file', function() {
-    var generateInit = require('./lib/generate-init');
-    grunt.file.write('tmp/modernizr-init.js', generateInit(modConfig));
-  });
-
   // Testing tasks
   grunt.registerTask('test', ['jshint', 'build', 'qunit', 'nodeunit']);
 
@@ -235,12 +225,11 @@ module.exports = function( grunt ) {
 
   // Build
   grunt.registerTask('build', [
-    'clean',
-    'generateinit',
+    'clean:dist',
     'requirejs',
-    'clean:postbuild',
     'stripdefine',
-    'uglify'
+    'uglify',
+    // 'clean:postbuild' //// Gruntfile is temporarily broken, must run as node package.
   ]);
 
   grunt.registerTask('default', [
