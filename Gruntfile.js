@@ -143,31 +143,16 @@ module.exports = function( grunt ) {
         'tmp'
       ]
     },
-    copy: {
-      build: {
-        files: {
-          'dist/modernizr-build.js': 'build/src/modernizr-build.js'
-        }
-      }
-    },
     requirejs: {
       compile: {
         options: {
-          dir: 'build',
-          appDir: '.',
           baseUrl: 'src',
-          optimize: 'none',
-          optimizeCss: 'none',
           paths: {
-            'test': '../src/feature-detects',
             'modernizr-init': '../tmp/modernizr-init'
           },
-          modules: [{
-            'name': 'modernizr-build',
-            'include': ['modernizr-init'],
-            'create': true
-          }],
-          fileExclusionRegExp: /^(.git|node_modules|modulizr|media|test)$/,
+          optimize: 'none',
+          name: 'modernizr-init',
+          out: 'dist/modernizr-build.js',
           wrap: {
             start: '<%= banner.full %>' + '\n;(function(window, document, undefined){',
             end: '})(this, document);'
@@ -253,7 +238,6 @@ module.exports = function( grunt ) {
     'clean',
     'generateinit',
     'requirejs',
-    'copy',
     'clean:postbuild',
     'stripdefine',
     'uglify'
