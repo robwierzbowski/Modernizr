@@ -159,7 +159,7 @@ module.exports = function( grunt ) {
           optimize: 'none',
           optimizeCss: 'none',
           paths: {
-            'test': '../feature-detects',
+            'test': '../src/feature-detects',
             'modernizr-init': '../tmp/modernizr-init'
           },
           modules: [{
