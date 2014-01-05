@@ -138,42 +138,6 @@ module.exports = function( grunt ) {
         'tmp'
       ]
     },
-    requirejs: {
-      compile: {
-        options: {
-          baseUrl: 'src',
-          paths: {
-            'modernizr-init': '../tmp/modernizr-init'
-          },
-          optimize: 'none',
-          name: 'modernizr-init',
-          out: 'dist/modernizr-build.js',
-          wrap: {
-            start: '<%= banner.full %>' + '\n;(function(window, document, undefined){',
-            end: '})(this, document);'
-          },
-          onBuildWrite: function (id, path, contents) {
-            if ((/define\(.*?\{/).test(contents)) {
-              //Remove AMD ceremony for use without require.js or almond.js
-              contents = contents.replace(/define\(.*?\{/, '');
-
-              contents = contents.replace(/\}\);\s*?$/,'');
-
-              if ( !contents.match(/Modernizr\.addTest\(/) && !contents.match(/Modernizr\.addAsyncTest\(/) ) {
-                //remove last return statement and trailing })
-                contents = contents.replace(/return.*[^return]*$/,'');
-              }
-            }
-            else if ((/require\([^\{]*?\{/).test(contents)) {
-              contents = contents.replace(/require[^\{]+\{/, '');
-              contents = contents.replace(/\}\);\s*$/,'');
-            }
-
-            return contents;
-          }
-        }
-      }
-    },
     connect: {
       server: {
         options: {
@@ -226,7 +190,6 @@ module.exports = function( grunt ) {
   // Build
   grunt.registerTask('build', [
     'clean:dist',
-    'requirejs',
     'stripdefine',
     'uglify',
     // 'clean:postbuild' //// Gruntfile is temporarily broken, must run as node package.
