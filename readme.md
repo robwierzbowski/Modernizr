@@ -44,7 +44,7 @@ Run the [test suite](http://modernizr.github.com/Modernizr/test/)
 
 ## Building Modernizr v3
 
-### To generate everything in 'config-all.json':
+### To generate everything in 'config-modernizr.json':
 
 ```js
 grunt build
@@ -99,7 +99,7 @@ modernizr.build({}, function (result) {
 });
 ```
 
-The first parameter takes a JSON object of options and feature-detects to include. See [`lib/config-all.json`](lib/config-all.json) for all available options.
+The first parameter takes a JSON object of options and feature-detects to include. See [`lib/config-modernizr.json`](lib/config-modernizr.json) for all available options.
 
 The second parameter is a function invoked on task completion.
 
