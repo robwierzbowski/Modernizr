@@ -3,7 +3,6 @@
 module.exports = function( grunt ) {
   'use strict';
 
-  var modConfig = grunt.file.readJSON('lib/config-modernizr.json');
   var browsers = grunt.file.readJSON('test/sauce-browsers.json');
 
   // Load grunt dependencies
@@ -18,9 +17,6 @@ module.exports = function( grunt ) {
     },
     nodeunit: {
       files: ['test/api/*.js']
-    },
-    stripdefine: {
-      build: ['dist/modernizr-build.js']
     },
     uglify: {
       options: {
@@ -143,20 +139,6 @@ module.exports = function( grunt ) {
     }
   });
 
-  // Strip define fn
-  grunt.registerMultiTask('stripdefine', 'Strip define call from dist file', function() {
-    this.filesSrc.forEach(function(filepath) {
-      // Remove `define('modernizr-init' ...)` and `define('modernizr-build' ...)`
-      var mod = grunt.file.read(filepath).replace(/define\("modernizr-(init|build)", function\(\)\{\}\);/g, '');
-
-      // Hack the prefix into place. Anything is way too big for something so small.
-      if ( modConfig && modConfig.classPrefix ) {
-        mod = mod.replace('classPrefix : \'\',', 'classPrefix : \'' + modConfig.classPrefix.replace(/"/g, '\\"') + '\',');
-      }
-      grunt.file.write(filepath, mod);
-    });
-  });
-
   // Testing tasks
   grunt.registerTask('test', ['jshint', 'build', 'qunit', 'nodeunit']);
 
@@ -169,7 +151,6 @@ module.exports = function( grunt ) {
   // Build
   grunt.registerTask('build', [
     'clean:dist',
-    'stripdefine',
     'uglify',
     // 'clean:postbuild' //// Gruntfile is temporarily broken, must run as node package.
   ]);
