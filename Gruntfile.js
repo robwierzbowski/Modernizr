@@ -18,22 +18,6 @@ module.exports = function( grunt ) {
     nodeunit: {
       files: ['test/api/*.js']
     },
-    uglify: {
-      options: {
-        stripbanners: true,
-        banner: '<%= banner.compact %>',
-        mangle: {
-          except: ['Modernizr']
-        },
-        beautify: {
-          ascii_only: true
-        }
-      },
-      dist: {
-        src: ['dist/modernizr-build.js'],
-        dest: 'dist/modernizr-build.min.js'
-      }
-    },
     watch: {
       files: '<%= jshint.files %>',
       tasks: 'jshint',
@@ -150,9 +134,9 @@ module.exports = function( grunt ) {
 
   // Build
   grunt.registerTask('build', [
+    //// Gruntfile is temporarily broken, must run as node package.
     'clean:dist',
-    'uglify',
-    // 'clean:postbuild' //// Gruntfile is temporarily broken, must run as node package.
+    'clean:postbuild'
   ]);
 
   grunt.registerTask('default', [
