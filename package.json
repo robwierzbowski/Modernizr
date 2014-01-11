@@ -27,7 +27,8 @@
   "scripts": {
     "test": "./node_modules/.bin/grunt test"
   },
-  "main": "./lib/cli",
+  "main": "./lib/build",
+  "bin": "./lib/cli",
   "repository": {
     "type": "git",
     "url": "git://github.com/Modernizr/Modernizr.git"
