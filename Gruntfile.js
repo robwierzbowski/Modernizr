@@ -1,5 +1,8 @@
 /*jshint node: true */
-/*global module */
+
+// TODO: Gruntfile is temporarily broken, must run as node package.
+// TODO: Re-impliment Grunt for testing, fix tests
+
 module.exports = function( grunt ) {
   'use strict';
 
@@ -134,7 +137,6 @@ module.exports = function( grunt ) {
 
   // Build
   grunt.registerTask('build', [
-    //// Gruntfile is temporarily broken, must run as node package.
     'clean:dist',
     'clean:postbuild'
   ]);
