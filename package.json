@@ -27,7 +27,7 @@
   "scripts": {
     "test": "./node_modules/.bin/grunt test"
   },
-  "main": "./lib/build.js",
+  "main": "./lib/modernizr.js",
   "bin": "./lib/cli.js",
   "repository": {
     "type": "git",
