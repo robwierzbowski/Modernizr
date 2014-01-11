@@ -5,7 +5,7 @@ var fs = require("fs");
 var path = require("path");
 var cwd = process.cwd();
 
-var config = path.join(cwd, "lib", "config-modernizr.json");
+var config = path.join(cwd, "lib", "config-all.json");
 var _cache;
 
 exports.setUp = function (callback) {
