@@ -1,19 +1,17 @@
 # Modernizr [![Build Status](https://secure.travis-ci.org/Modernizr/Modernizr.png?branch=master)](http://travis-ci.org/Modernizr/Modernizr)
 
-##### Modernizr is a JavaScript library that detects HTML5 and CSS3 features in the user’s browser.
+**Modernizr is a JavaScript library that detects HTML5 and CSS3 features in the user’s browser.**
 
 - [Website](http://www.modernizr.com)
 - [Documentation](http://www.modernizr.com/docs/)
 
-Modernizr tests which native CSS3 and HTML5 features are available in the current UA and makes the results available to you in two ways: as properties on a global `Modernizr` object, and as classes on the `<html>` element. This information allows you to progressively enhance your pages with a granular level of control over the experience.
+Modernizr tests which native CSS3 and HTML5 features are available in the current UA and makes the results available to you in two ways: as properties on a global `Modernizr` object, and as classes on the `<html>` element. This information allows you to progressively enhance your pages based on whether the user's browser supports a particular feature or API. To see the output of all the tests Modernizr can run, visit the [test suite](http://modernizr.github.io/Modernizr/test/).
 
-Modernizr has an optional (*not included*) conditional resource loader called `Modernizr.load()`, based on [Yepnope.js](http://yepnopejs.com). You can get a build that includes `Modernizr.load()`, as well as choosing which feature tests to include on the [Download page](http://www.modernizr.com/download/).
+Modernizr has an optional (*not included*) conditional resource loader called `Modernizr.load()`, based on [Yepnope.js](http://yepnopejs.com). You can build a custom Modernizr file that includes `Modernizr.load()`, as well as choosing which feature tests to include on the [download page](http://www.modernizr.com/download/).
 
-## New Asynchronous Event Listeners
+<!-- ## New Asynchronous Event Listeners
 
-Often times people want to know when an asynchronous test is done so they can allow their application to react to it.
-In the past, you've had to rely on watching properties or `<html>` classes. Only events on **asynchronous** tests are
-supported. Synchronous tests should be handled synchronously for speed and consistency reasons.
+Often times people want to know when an asynchronous test is done so they can allow their application to react to it. In the past, you've had to rely on watching properties or `<html>` classes. Now you can react to asynchronus tests with the `.on` event.
 
 The new api looks like this:
 
@@ -29,80 +27,102 @@ Modernizr.on('testname', function( result ) {
 });
 ```
 
-We guarantee that we'll only invoke your function once (per time that you call `on`). We are currently not exposing
-a method for exposing the `trigger` functionality. Instead, if you'd like to have control over async tests, use the
-`src/addTest` feature, and any test that you set will automatically expose and trigger the `on` functionality.
+We guarantee that we'll only invoke your function once per time that you call `on`. We are currently not exposing the `trigger` functionality. Instead, use the `src/addTest` feature to control which async tests will expose and trigger the `on` functionality.
 
-## Getting Started
+Only events on **asynchronous** tests are supported. Synchronous tests should be handled synchronously for speed and consistency.
+ -->
+## Use in a node.js project
 
-- Clone or download the repository
-- Install project dependencies with `npm install`
+<!-- Note: this step is not valid until Modernizr is registered with NPM -->
 
-## Test suite
+1. Install the package locally: `npm install --save modernizr`
+2. Require and use in your node project.
 
-Run the [test suite](http://modernizr.github.com/Modernizr/test/)
+#### modernizr.build(config, options)
 
-## Building Modernizr v3
+**config** `Object`, required
 
-### To generate everything in 'config-all.json':
+A Modernizr configuration object. See [`lib/config-all.json`](lib/config-all.json) for all available options.
+
+**options** `Object`
+
+- **dest** `String`, `Boolean`  
+    Destination path for the custom Modernizr build, or false to output nothing. Defaults to `./modernizr.js`.
+- **min** `Boolean`  
+    Minify the output code. Defaults to false.
+- **verbose** `Boolean`  
+    Output success messages. Defaults to false.
+- **callback** `Function`  
+    Function to run when code building is complete. An `output` argument containing a string of the built code is available.
+
+#### Example
 
 ```js
-grunt build
-//outputs to ./dist/modernizr-build.js
-```
+'use strict';
+var modernizr = require('modernizr');
+var config = require('my-config.json');
 
-### To run tests (in phantom):
+// Write a custom Modernizr build with default settings
+modernizr.build(config);
 
-```js
-grunt test
-```
-
-### To run tests (in browser):
-
-```shell
-grunt build
-serve .
-visit <url>/test
-```
-
-### To see simple build in browser:
-
-serve the root dir, `<url>/test/modular.html`
-
-### To see the build tool:
-
-* checkout the modernizr.com code
-* install all your gems and bundles and jekyll and shit
-* `jekyll`
-* `serve ./_sites`
-* visit <url>/download
-* It should be just a big list of things you can build with no frills.
-
-### API Reference
-
-Modernizr can be used programmatically via npm:
-
-```javascript
-var modernizr = require("modernizr");
-```
-
-#### Building
-
-A `build` method is exposed for generating custom Modernizr builds. Example:
-
-```javascript
-var modernizr = require("modernizr");
-
-modernizr.build({}, function (result) {
-  console.log(result.code); // full source
-  console.log(result.min); // minfied output
+// Hide success messages, don't write a file, and assign minified output to a variable
+var modernizrBuild;
+modernizr.build(config, {
+  min: true,
+  dest: false
+  verbose: false,
+  callback: function (output) {
+    modernizrBuild = output;
+  },
 });
 ```
 
-The first parameter takes a JSON object of options and feature-detects to include. See [`lib/config-all.json`](lib/config-all.json) for all available options.
+## Use from the command line
 
-The second parameter is a function invoked on task completion.
+You can also use the package manually from the command line.
+
+1. Install the package globally: `npm install -g modernizr`
+2. Run `modernizr` from the command line. Use `modernizr --help` to see all available options.
+
+#### Example
+
+```bash
+# Write a development build to ./modernizr.js
+$ modernizr
+
+# Write a custom minified build to a specified location
+$ modernizr --config ./my-config.json --dest ./build/modernizr-build.js --min
+```
+
+## Use with Grunt
+
+Check out [Grunt-modernizr](https://github.com/Modernizr/grunt-modernizr)!
+
+## Contributing
+
+Add and improve feature tests in `feature-detects/`.  
+Contribute to the Modernizr script in `src/`.  
+Contribute to the build system in `lib/`.  
+
+Take care to maintain the existing code style. Lint and test your code with Grunt.
+
+To contribute to the the web-based build tool, see the [modernizr.com repository](https://github.com/Modernizr/modernizr.com/). 
+
+#### Testing
+
+To test in phantom, run `grunt test`.
+
+To test in the browser:
+
+1. run `grunt build`
+2. run `serve .`
+3. visit `<url>/test`
+
+To see a simple build in the browser:
+
+1. run `serve .`
+2. visit  `<url>/test/modular.html`
 
 ## License
 
-MIT license
+[MIT license](http://en.wikipedia.org/wiki/MIT_License)
